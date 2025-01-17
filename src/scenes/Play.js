@@ -191,6 +191,16 @@ const Play = class extends Phaser.Scene {
     }
     this.endTime += 3000
 
+    this.add.particles(ship.x, ship.y, 'explosion', {
+      frame: ['8', '9'],
+      lifespan: 4000,
+      speed: { min: 100, max: 200 },
+      scale: { start: 0.8, end: 0.4 },
+      gravityY: 150,
+      blendMode: 'ADD',
+      emitting: false,
+    }).explode(32)
+
     this.sound.play('sfx-explosion')
   }
 }
