@@ -1,7 +1,7 @@
 /**
  * Name: Astra Tsai
- * Title: Rocket Patrol
- * Time: 1 hour
+ * Title: Rocket Patrol Deluxe
+ * Time: 1 hour 42 minutes
  * Mods:
  * - Implement the 'FIRE' UI text from the original game (1)
  * - Implement the speed increase that happens after 30 seconds in the original game (1)
