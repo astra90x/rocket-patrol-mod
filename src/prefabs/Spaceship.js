@@ -1,15 +1,14 @@
 import Phaser from 'phaser'
 
-class Spaceship extends Phaser.GameObjects.Sprite {
+const Spaceship = class extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, frame, pointValue) {
     super(scene, x, y, texture, frame)
-    scene.add.existing(this)   // add to existing scene
-    this.points = pointValue   // store pointValue
-    this.moveSpeed = game.settings.spaceshipSpeed     // pixels per frame
+    scene.add.existing(this) // add to existing scene
+    this.points = pointValue
+    this.moveSpeed = game.settings.spaceshipSpeed // pixels per frame
   }
 
   update() {
-    console.log(this.x)
     // move spaceship left
     this.x -= this.moveSpeed
     // wrap around from left edge to right edge
@@ -18,7 +17,6 @@ class Spaceship extends Phaser.GameObjects.Sprite {
     }
   }
 
-  // position reset
   reset() {
     this.x = game.config.width
   }
