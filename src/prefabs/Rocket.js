@@ -15,12 +15,10 @@ const Rocket = class extends Phaser.GameObjects.Sprite {
 
   update() {
     // left/right movement
-    if (!this.isFiring) {
-      if (global.keyLEFT.isDown && this.x >= global.borderUISize + this.width) {
-        this.x -= this.moveSpeed
-      } else if (global.keyRIGHT.isDown && this.x <= global.game.config.width - global.borderUISize - this.width) {
-        this.x += this.moveSpeed
-      }
+    if (global.keyLEFT.isDown && this.x >= global.borderUISize + this.width) {
+      this.x -= this.moveSpeed
+    } else if (global.keyRIGHT.isDown && this.x <= global.game.config.width - global.borderUISize - this.width) {
+      this.x += this.moveSpeed
     }
     // fire button
     if (Phaser.Input.Keyboard.JustDown(global.keyF) && !this.isFiring) {
