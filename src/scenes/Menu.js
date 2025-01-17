@@ -21,6 +21,24 @@ const Menu = class extends Phaser.Scene {
         spaceshipSpeed: 6,
         gameTimer: 30000,
       },
+      {
+        name: 'Easy (2 Player)',
+        spaceshipSpeed: 3,
+        gameTimer: 60000,
+        twoPlayer: true,
+      },
+      {
+        name: 'Medium (2 Player)',
+        spaceshipSpeed: 4,
+        gameTimer: 45000,
+        twoPlayer: true,
+      },
+      {
+        name: 'Hard (2 Player)',
+        spaceshipSpeed: 6,
+        gameTimer: 30000,
+        twoPlayer: true,
+      },
     ]
     this.mode = 0
   }

@@ -31,7 +31,14 @@ const Play = class extends Phaser.Scene {
     this.add.rectangle(global.game.config.width - global.borderUISize, 0, global.borderUISize, global.game.config.height, 0xFFFFFF).setOrigin(0 ,0)
 
     // add Rocket (p1)
-    this.p1Rocket = new Rocket(this, global.game.config.width / 2, global.game.config.height - global.borderUISize - global.borderPadding, 'rocket').setOrigin(0.5, 0)
+    if (global.game.settings.twoPlayer) {
+      this.p1Rocket = new Rocket(this, global.game.config.width * 0.3, global.game.config.height - global.borderUISize - global.borderPadding, 'rocket').setOrigin(0.5, 0)
+      this.p2Rocket = new Rocket(this, global.game.config.width * 0.7, global.game.config.height - global.borderUISize - global.borderPadding, 'rocket').setOrigin(0.5, 0)
+      this.p2Rocket.active = false
+    } else {
+      this.p1Rocket = new Rocket(this, global.game.config.width / 2, global.game.config.height - global.borderUISize - global.borderPadding, 'rocket').setOrigin(0.5, 0)
+      this.p2Rocket = null
+    }
 
     // add Spaceships (x3)
     this.ship01 = new Spaceship(this, global.game.config.width + global.borderUISize * 6, global.borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0)
@@ -57,6 +64,7 @@ const Play = class extends Phaser.Scene {
 
     // initialize score
     this.p1Score = 0
+    this.p2Score = 0
 
     // display score
     let scoreConfig = {
@@ -71,8 +79,10 @@ const Play = class extends Phaser.Scene {
       },
       fixedWidth: 100,
     }
-    this.scoreLeft = this.add.text(global.borderUISize + global.borderPadding, global.borderUISize + global.borderPadding * 2, this.p1Score, scoreConfig)
-    this.timeLeft = this.add.text(global.game.config.width - global.borderUISize + global.borderPadding - 122, global.borderUISize + global.borderPadding * 2, this.p1Score, scoreConfig)
+    this.scoreText = this.add.text(global.borderUISize + global.borderPadding, global.borderUISize + global.borderPadding * 2, this.p1Score, scoreConfig)
+    if (global.game.settings.twoPlayer)
+      this.scoreTextP2 = this.add.text(global.borderUISize + global.borderPadding + 150, global.borderUISize + global.borderPadding * 2, this.p2Score, scoreConfig)
+    this.timeLeft = this.add.text(global.game.config.width - global.borderUISize + global.borderPadding - 122, global.borderUISize + global.borderPadding * 2, '', scoreConfig)
 
     // GAME OVER flag
     this.gameOver = false
@@ -96,7 +106,7 @@ const Play = class extends Phaser.Scene {
         fixedWidth: 0,
       }
       this.add.text(global.game.config.width / 2, global.game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5)
-      this.add.text(global.game.config.width / 2, global.game.config.height / 2 + 64, 'Press (R) to Restart or \u2190 to Menu', scoreConfig).setOrigin(0.5)
+      this.add.text(global.game.config.width / 2, global.game.config.height / 2 + 64, 'Press R to Restart or \u2190 to Menu', scoreConfig).setOrigin(0.5)
       this.gameOver = true
     }
     if (this.endTime - Date.now() <= 30e3) {
@@ -123,23 +133,22 @@ const Play = class extends Phaser.Scene {
 
     if (!this.gameOver) {
       this.p1Rocket.update()
+      this.p2Rocket?.update()
       this.ship01.update()
       this.ship02.update()
       this.ship03.update()
     }
 
     // check collisions
-    if (Play.checkCollision(this.p1Rocket, this.ship03)) {
-      this.p1Rocket.reset()
-      this.shipExplode(this.ship03)
-    }
-    if (Play.checkCollision(this.p1Rocket, this.ship02)) {
-      this.p1Rocket.reset()
-      this.shipExplode(this.ship02)
-    }
-    if (Play.checkCollision(this.p1Rocket, this.ship01)) {
-      this.p1Rocket.reset()
-      this.shipExplode(this.ship01)
+    for (let ship of [this.ship03, this.ship02, this.ship01]) {
+      if (Play.checkCollision(this.p1Rocket, ship)) {
+        this.shipExplode(ship)
+        this.p1Rocket.reset()
+      }
+      if (this.p2Rocket && Play.checkCollision(this.p2Rocket, ship)) {
+        this.shipExplode(ship)
+        this.p2Rocket.reset()
+      }
     }
   }
 
@@ -165,9 +174,14 @@ const Play = class extends Phaser.Scene {
       boom.destroy()
     })
     // score add and repaint
-    this.p1Score += ship.points
+    if (this.p1Rocket.active) {
+      this.p1Score += ship.points
+      this.scoreText.text = this.p1Score
+    } else {
+      this.p2Score += ship.points
+      this.scoreText.text = this.p2Score
+    }
     this.endTime += 3000
-    this.scoreLeft.text = this.p1Score
 
     this.sound.play('sfx-explosion')
   }

@@ -11,19 +11,22 @@ const Rocket = class extends Phaser.GameObjects.Sprite {
     this.moveSpeed = 2 // pixels per frame
     this.sfxRocket = scene.sound.add('sfx-rocket') // add rocket sfx
     this.scene = scene
+    this.active = true
   }
 
   update() {
     // left/right movement
-    if (global.keyLEFT.isDown && this.x >= global.borderUISize + this.width) {
-      this.x -= this.moveSpeed
-    } else if (global.keyRIGHT.isDown && this.x <= global.game.config.width - global.borderUISize - this.width) {
-      this.x += this.moveSpeed
-    }
-    // fire button
-    if (Phaser.Input.Keyboard.JustDown(global.keyF) && !this.isFiring) {
-      this.isFiring = true
-      this.sfxRocket.play()
+    if (this.active) {
+      if (global.keyLEFT.isDown && this.x >= global.borderUISize + this.width) {
+        this.x -= this.moveSpeed
+      } else if (global.keyRIGHT.isDown && this.x <= global.game.config.width - global.borderUISize - this.width) {
+        this.x += this.moveSpeed
+      }
+      // fire button
+      if (Phaser.Input.Keyboard.JustDown(global.keyF) && !this.isFiring) {
+        this.isFiring = true
+        this.sfxRocket.play()
+      }
     }
     // if fired, move up
     if (this.isFiring && this.y >= global.borderUISize * 3 + global.borderPadding) {
@@ -39,6 +42,11 @@ const Rocket = class extends Phaser.GameObjects.Sprite {
   reset() {
     this.isFiring = false
     this.y = global.game.config.height - global.borderUISize - global.borderPadding
+    if (global.game.settings.twoPlayer) {
+      let p = this === this.scene.p1Rocket ? this.scene.p2Rocket : this.scene.p1Rocket
+      this.active = false
+      p.active = true
+    }
   }
 }
 
