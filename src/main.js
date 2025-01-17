@@ -1,9 +1,10 @@
 import Phaser from 'phaser'
 
+import global from './global.js'
 import Menu from './scenes/Menu.js'
 import Play from './scenes/Play.js'
 
-window.game = new Phaser.Game({
+global.game = new Phaser.Game({
   type: Phaser.CANVAS,
   width: 640,
   height: 480,
@@ -11,11 +12,11 @@ window.game = new Phaser.Game({
 })
 
 // set UI sizes
-window.borderUISize = game.config.height / 15
-window.borderPadding = borderUISize / 3
+global.borderUISize = global.game.config.height / 15
+global.borderPadding = global.borderUISize / 3
 
 // reserve keyboard variables
-window.keyF = null
-window.keyR = null
-window.keyLEFT = null
-window.keyRIGHT = null
+global.keyF = null
+global.keyR = null
+global.keyLEFT = null
+global.keyRIGHT = null

@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+import global from '../global.js'
+
 const Menu = class extends Phaser.Scene {
   constructor() {
     super('menuScene')
@@ -28,30 +30,30 @@ const Menu = class extends Phaser.Scene {
     }
 
     // show menu text
-    this.add.text(game.config.width / 2, game.config.height / 2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5)
-    this.add.text(game.config.width / 2, game.config.height / 2, 'Use \u2190\u2192 arrows to move & (F) to fire', menuConfig).setOrigin(0.5)
+    this.add.text(global.game.config.width / 2, global.game.config.height / 2 - global.borderUISize - global.borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5)
+    this.add.text(global.game.config.width / 2, global.game.config.height / 2, 'Use \u2190\u2192 arrows to move & (F) to fire', menuConfig).setOrigin(0.5)
     menuConfig.backgroundColor = '#00FF00'
     menuConfig.color = '#000'
-    this.add.text(game.config.width / 2, game.config.height / 2 + borderUISize + borderPadding, 'Press \u2190 for Novice or \u2192 for Expert', menuConfig).setOrigin(0.5)
+    this.add.text(global.game.config.width / 2, global.game.config.height / 2 + global.borderUISize + global.borderPadding, 'Press \u2190 for Novice or \u2192 for Expert', menuConfig).setOrigin(0.5)
 
     // define keys
-    window.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-    window.keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+    global.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+    global.keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
   }
 
   update() {
-    if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+    if (Phaser.Input.Keyboard.JustDown(global.keyLEFT)) {
       // novice mode
-      game.settings = {
+      global.game.settings = {
         spaceshipSpeed: 3,
         gameTimer: 60000,
       }
       this.sound.play('sfx-select')
       this.scene.start('playScene')
     }
-    if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+    if (Phaser.Input.Keyboard.JustDown(global.keyRIGHT)) {
       // expert mode
-      game.settings = {
+      global.game.settings = {
         spaceshipSpeed: 4,
         gameTimer: 45000,
       }

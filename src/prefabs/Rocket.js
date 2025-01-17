@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+import global from '../global.js'
+
 const Rocket = class extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, texture, frame) {
     super(scene, x, y, texture, frame)
@@ -13,30 +15,30 @@ const Rocket = class extends Phaser.GameObjects.Sprite {
   update() {
     // left/right movement
     if (!this.isFiring) {
-      if (keyLEFT.isDown && this.x >= borderUISize + this.width) {
+      if (global.keyLEFT.isDown && this.x >= global.borderUISize + this.width) {
         this.x -= this.moveSpeed
-      } else if (keyRIGHT.isDown && this.x <= game.config.width - borderUISize - this.width) {
+      } else if (global.keyRIGHT.isDown && this.x <= global.game.config.width - global.borderUISize - this.width) {
         this.x += this.moveSpeed
       }
     }
     // fire button
-    if (Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring) {
+    if (Phaser.Input.Keyboard.JustDown(global.keyF) && !this.isFiring) {
       this.isFiring = true
       this.sfxRocket.play()
     }
     // if fired, move up
-    if (this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
+    if (this.isFiring && this.y >= global.borderUISize * 3 + global.borderPadding) {
       this.y -= this.moveSpeed
     }
     // reset on miss
-    if (this.y <= borderUISize * 3 + borderPadding) {
+    if (this.y <= global.borderUISize * 3 + global.borderPadding) {
       this.reset()
     }
   }
 
   reset() {
     this.isFiring = false
-    this.y = game.config.height - borderUISize - borderPadding
+    this.y = global.game.config.height - global.borderUISize - global.borderPadding
   }
 }
 
