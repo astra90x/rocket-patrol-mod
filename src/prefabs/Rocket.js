@@ -10,6 +10,7 @@ const Rocket = class extends Phaser.GameObjects.Sprite {
     this.isFiring = false // track rocket's firing status
     this.moveSpeed = 2 // pixels per frame
     this.sfxRocket = scene.sound.add('sfx-rocket') // add rocket sfx
+    this.scene = scene
   }
 
   update() {
@@ -32,6 +33,7 @@ const Rocket = class extends Phaser.GameObjects.Sprite {
     }
     // reset on miss
     if (this.y <= global.borderUISize * 3 + global.borderPadding) {
+      this.scene.endTime -= 3000
       this.reset()
     }
   }

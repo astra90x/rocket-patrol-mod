@@ -4,6 +4,7 @@
  * Time: 1 hour
  * Mods:
  * - Display the time remaining (in seconds) on the screen (3)
+ * - Implement a new timing/scoring mechanism that adds time to the clock for successful hits and subtracts time for misses (5)
  * Citation:
  * - Nathan's code
  * - Phaser documentation

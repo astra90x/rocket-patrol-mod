@@ -161,6 +161,7 @@ const Play = class extends Phaser.Scene {
     })
     // score add and repaint
     this.p1Score += ship.points
+    this.endTime += 3000
     this.scoreLeft.text = this.p1Score
 
     this.sound.play('sfx-explosion')
