@@ -83,12 +83,13 @@ const Play = class extends Phaser.Scene {
         top: 5,
         bottom: 5,
       },
-      fixedWidth: 100,
+      fixedWidth: 70,
     }
     this.scoreText = this.add.text(global.borderUISize + global.borderPadding, global.borderUISize + global.borderPadding * 2, this.p1Score, scoreConfig)
     if (global.game.settings.twoPlayer)
-      this.scoreTextP2 = this.add.text(global.borderUISize + global.borderPadding + 150, global.borderUISize + global.borderPadding * 2, this.p2Score, scoreConfig)
-    this.timeLeft = this.add.text(global.game.config.width - global.borderUISize + global.borderPadding - 122, global.borderUISize + global.borderPadding * 2, '', scoreConfig)
+      this.scoreTextP2 = this.add.text(global.borderUISize + global.borderPadding + 82, global.borderUISize + global.borderPadding * 2, this.p2Score, scoreConfig)
+    this.fireText = this.add.text(global.game.config.width / 2 - global.borderUISize, -500, 'FIRE', scoreConfig)
+    this.timeLeft = this.add.text(global.game.config.width - global.borderUISize + global.borderPadding - 92, global.borderUISize + global.borderPadding * 2, '', scoreConfig)
 
     // GAME OVER flag
     this.gameOver = false
@@ -143,6 +144,8 @@ const Play = class extends Phaser.Scene {
       for (let ship of this.ships)
         ship.update()
     }
+
+    this.fireText.y = this.p1Rocket.isFiring || this.p2Rocket?.isFiring ? global.borderUISize + global.borderPadding * 2 : -500
 
     // check collisions
     for (let ship of this.ships) {

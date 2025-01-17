@@ -3,6 +3,7 @@
  * Title: Rocket Patrol
  * Time: 1 hour
  * Mods:
+ * - Implement the 'FIRE' UI text from the original game (1)
  * - Implement the speed increase that happens after 30 seconds in the original game (1)
  * - Randomize each spaceship's movement direction at the start of each play (1)
  * - Allow the player to control the Rocket after it's fired (1)
