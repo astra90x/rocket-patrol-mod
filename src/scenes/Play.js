@@ -72,20 +72,40 @@ const Play = class extends Phaser.Scene {
       fixedWidth: 100,
     }
     this.scoreLeft = this.add.text(global.borderUISize + global.borderPadding, global.borderUISize + global.borderPadding * 2, this.p1Score, scoreConfig)
+    this.timeLeft = this.add.text(global.game.config.width - global.borderUISize + global.borderPadding - 122, global.borderUISize + global.borderPadding * 2, this.p1Score, scoreConfig)
 
     // GAME OVER flag
     this.gameOver = false
 
     // 60-second play clock
-    scoreConfig.fixedWidth = 0
-    this.clock = this.time.delayedCall(global.game.settings.gameTimer, () => {
-      this.add.text(global.game.config.width / 2, global.game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5)
-      this.add.text(global.game.config.width / 2, global.game.config.height / 2 + 64, 'Press (R) to Restart or \u2190 to Menu', scoreConfig).setOrigin(0.5)
-      this.gameOver = true
-    }, null, this)
+    this.endTime = Date.now() + global.game.settings.gameTimer
   }
 
   update() {
+    if (Date.now() > this.endTime) {
+      let scoreConfig = {
+        fontFamily: 'Courier',
+        fontSize: '28px',
+        backgroundColor: '#F3B141',
+        color: '#843605',
+        align: 'right',
+        padding: {
+          top: 5,
+          bottom: 5,
+        },
+        fixedWidth: 0,
+      }
+      this.add.text(global.game.config.width / 2, global.game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5)
+      this.add.text(global.game.config.width / 2, global.game.config.height / 2 + 64, 'Press (R) to Restart or \u2190 to Menu', scoreConfig).setOrigin(0.5)
+      this.gameOver = true
+    }
+
+    if (this.gameOver) {
+      this.timeLeft.text = '0'
+    } else {
+      this.timeLeft.text = Math.floor((this.endTime - Date.now()) / 1000)
+    }
+
     if (this.gameOver && Phaser.Input.Keyboard.JustDown(global.keyR)) {
       this.scene.restart()
     }

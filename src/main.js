@@ -3,6 +3,7 @@
  * Title: Rocket Patrol
  * Time: 1 hour
  * Mods:
+ * - Display the time remaining (in seconds) on the screen (3)
  * Citation:
  * - Nathan's code
  * - Phaser documentation
