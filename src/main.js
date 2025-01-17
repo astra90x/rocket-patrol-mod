@@ -24,6 +24,7 @@ global.game = new Phaser.Game({
   width: 640,
   height: 480,
   scene: [Menu, Play],
+  fps: { forceSetTimeOut: true, target: 60 },
 })
 
 // set UI sizes
