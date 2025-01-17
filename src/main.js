@@ -1,15 +1,21 @@
-let config = {
-    type: Phaser.CANVAS,
-    width: 640,
-    height: 480,
-    scene: [ Menu, Play ]
-}
+import Phaser from 'phaser'
 
-let game = new Phaser.Game(config);
+import Menu from './scenes/Menu.js'
+import Play from './scenes/Play.js'
+
+window.game = new Phaser.Game({
+  type: Phaser.CANVAS,
+  width: 640,
+  height: 480,
+  scene: [Menu, Play]
+})
 
 // set UI sizes
-let borderUISize = game.config.height / 15;
-let borderPadding = borderUISize / 3;
+window.borderUISize = game.config.height / 15
+window.borderPadding = borderUISize / 3
 
 // reserve keyboard variables
-let keyF, keyR, keyLEFT, keyRIGHT;
+window.keyF = null
+window.keyR = null
+window.keyLEFT = null
+window.keyRIGHT = null
