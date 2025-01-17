@@ -7,20 +7,21 @@ const Spaceship = class extends Phaser.GameObjects.Sprite {
     super(scene, x, y, texture, frame)
     scene.add.existing(this) // add to existing scene
     this.points = pointValue
+    this.flipX = Math.random() < 0.5
     this.moveSpeed = global.game.settings.spaceshipSpeed // pixels per frame
   }
 
   update() {
     // move spaceship left
-    this.x -= this.moveSpeed
+    this.x += this.flipX ? this.moveSpeed : -this.moveSpeed
     // wrap around from left edge to right edge
-    if (this.x <= 0 - this.width) {
+    if (this.flipX ? this.x >= global.game.config.width + this.width : this.x <= 0 - this.width) {
       this.reset()
     }
   }
 
   reset() {
-    this.x = global.game.config.width
+    this.x = this.flipX ? 0 : global.game.config.width
   }
 }
 
