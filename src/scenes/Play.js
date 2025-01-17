@@ -91,6 +91,15 @@ const Play = class extends Phaser.Scene {
     this.fireText = this.add.text(global.game.config.width / 2 - global.borderUISize, -500, 'FIRE', scoreConfig)
     this.timeLeft = this.add.text(global.game.config.width - global.borderUISize + global.borderPadding - 92, global.borderUISize + global.borderPadding * 2, '', scoreConfig)
 
+    this.emitter = this.add.particles(0, 0, 'explosion', {
+      frame: ['8', '9'],
+      lifespan: 4000,
+      speed: { min: 100, max: 200 },
+      scale: { start: 0.8, end: 0.4 },
+      gravityY: 150,
+      blendMode: 'ADD',
+      emitting: false,
+    })
     // GAME OVER flag
     this.gameOver = false
 
@@ -112,8 +121,10 @@ const Play = class extends Phaser.Scene {
         },
         fixedWidth: 0,
       }
-      this.add.text(global.game.config.width / 2, global.game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5)
-      this.add.text(global.game.config.width / 2, global.game.config.height / 2 + 64, 'Press R to Restart or \u2190 to Menu', scoreConfig).setOrigin(0.5)
+      if (!this.gameOver) {
+        this.add.text(global.game.config.width / 2, global.game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5)
+        this.add.text(global.game.config.width / 2, global.game.config.height / 2 + 64, 'Press R to Restart or \u2190 to Menu', scoreConfig).setOrigin(0.5)
+      }
       this.gameOver = true
     }
     if (this.endTime - Date.now() <= 30e3) {
@@ -191,15 +202,9 @@ const Play = class extends Phaser.Scene {
     }
     this.endTime += 3000
 
-    this.add.particles(ship.x, ship.y, 'explosion', {
-      frame: ['8', '9'],
-      lifespan: 4000,
-      speed: { min: 100, max: 200 },
-      scale: { start: 0.8, end: 0.4 },
-      gravityY: 150,
-      blendMode: 'ADD',
-      emitting: false,
-    }).explode(32)
+    this.emitter.x = ship.x
+    this.emitter.y = ship.y
+    this.emitter.explode(32)
 
     this.sound.play('sfx-explosion')
   }
