@@ -13,6 +13,7 @@ const Play = class extends Phaser.Scene {
     // load images/tile sprites
     this.load.image('rocket', './assets/rocket.png')
     this.load.image('spaceship', './assets/spaceship.png')
+    this.load.image('fastship', './assets/fastship.png')
     this.load.image('starfield', './assets/starfield.png')
     // load spritesheet
     this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 })
@@ -41,9 +42,14 @@ const Play = class extends Phaser.Scene {
     }
 
     // add Spaceships (x3)
-    this.ship01 = new Spaceship(this, global.game.config.width + global.borderUISize * 6, global.borderUISize * 4, 'spaceship', 0, 30).setOrigin(0, 0)
-    this.ship02 = new Spaceship(this, global.game.config.width + global.borderUISize * 3, global.borderUISize * 5 + global.borderPadding * 2, 'spaceship', 0, 20).setOrigin(0,0)
-    this.ship03 = new Spaceship(this, global.game.config.width, global.borderUISize * 6 + global.borderPadding * 4, 'spaceship', 0, 10).setOrigin(0,0)
+    let fast = Math.floor(Math.random() * 4)
+    this.ships = []
+    for (let i = 0; i < 4; i++) {
+      let isFast = i === fast
+      let ship = new Spaceship(this, global.game.config.width + global.borderUISize * (6 - 3 * i), global.borderUISize * 4 + (global.borderUISize + global.borderPadding * 2) * i, isFast ? 'fastship' : 'spaceship', 0, isFast ? 50 : 20).setOrigin(0, 0)
+      if (isFast) ship.moveSpeedScale *= 3
+      this.ships.push(ship)
+    }
 
     // define keys
     global.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
@@ -110,9 +116,9 @@ const Play = class extends Phaser.Scene {
       this.gameOver = true
     }
     if (this.endTime - Date.now() <= 30e3) {
-      this.ship01.moveSpeed = global.game.settings.spaceshipSpeed * 2
-      this.ship02.moveSpeed = global.game.settings.spaceshipSpeed * 2
-      this.ship03.moveSpeed = global.game.settings.spaceshipSpeed * 2
+      for (let ship of this.ships)
+        if (ship.moveSpeedScale % 2 === 1)
+          ship.moveSpeedScale *= 2
     }
 
     if (this.gameOver) {
@@ -134,13 +140,12 @@ const Play = class extends Phaser.Scene {
     if (!this.gameOver) {
       this.p1Rocket.update()
       this.p2Rocket?.update()
-      this.ship01.update()
-      this.ship02.update()
-      this.ship03.update()
+      for (let ship of this.ships)
+        ship.update()
     }
 
     // check collisions
-    for (let ship of [this.ship03, this.ship02, this.ship01]) {
+    for (let ship of this.ships) {
       if (Play.checkCollision(this.p1Rocket, ship)) {
         this.shipExplode(ship)
         this.p1Rocket.reset()
