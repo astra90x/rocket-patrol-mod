@@ -99,6 +99,11 @@ const Play = class extends Phaser.Scene {
       this.add.text(global.game.config.width / 2, global.game.config.height / 2 + 64, 'Press (R) to Restart or \u2190 to Menu', scoreConfig).setOrigin(0.5)
       this.gameOver = true
     }
+    if (this.endTime - Date.now() <= 30e3) {
+      this.ship01.moveSpeed = global.game.settings.spaceshipSpeed * 2
+      this.ship02.moveSpeed = global.game.settings.spaceshipSpeed * 2
+      this.ship03.moveSpeed = global.game.settings.spaceshipSpeed * 2
+    }
 
     if (this.gameOver) {
       this.timeLeft.text = '0'
