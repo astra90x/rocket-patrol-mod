@@ -1,3 +1,13 @@
+/**
+ * Name: Astra Tsai
+ * Title: Rocket Patrol
+ * Time: 1 hour
+ * Mods:
+ * Citation:
+ * - Nathan's code
+ * - Phaser documentation
+ */
+
 import Phaser from 'phaser'
 
 import global from './global.js'
